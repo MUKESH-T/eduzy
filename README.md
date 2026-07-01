@@ -52,7 +52,7 @@ The primary objective of EDUZY is to provide personalized programming education.
 ### Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/eduzy.git
+https://github.com/MUKESH-T/eduzy.git
 cd eduzy
 ```
 
