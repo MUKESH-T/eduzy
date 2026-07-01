@@ -1,20 +1,109 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# EDUZY - AI Powered Learning Platform
 
-# Run and deploy your AI Studio app
+EDUZY is an AI-powered learning platform designed to help students improve their programming skills through personalized learning paths. Instead of following a generic course, EDUZY identifies weak areas in a student's chosen programming language and generates a customized roadmap using Gemini AI.
 
-This contains everything you need to run your app locally.
+The platform provides AI-generated course content, interactive assessments, an intelligent chatbot for doubt clarification, and final evaluations to measure learning progress.
 
-View your app in AI Studio: https://ai.studio/apps/drive/1LuvYT_TScOmE5LxgqJ8XjdFHfppt1KGY
+---
 
-## Run Locally
+## ✨ Features
 
-**Prerequisites:**  Node.js
+- 🤖 AI-generated personalized learning roadmap
+- 📚 Structured programming course generation
+- 📝 AI-powered quizzes and assessments
+- 💬 Eduzy AI Chatbot for doubt clarification
+- 🎯 Final AI-generated evaluation
+- ☁️ Cloud-based data storage using Firebase
 
+---
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+## 🚀 Tech Stack
+
+### Frontend
+- React
+- TypeScript
+- Vite
+- Tailwind CSS
+
+### Backend
+- Node.js
+
+### Database
+- Firebase Cloud Firestore
+
+### AI
+- Gemini API
+
+---
+
+## 📌 Project Goal
+
+The primary objective of EDUZY is to provide personalized programming education. The platform analyzes the student's selected programming language and creates a structured learning path that focuses on improving weak concepts instead of teaching everything from scratch.
+
+---
+
+## ⚙️ Installation
+
+### Prerequisites
+
+- Node.js
+- npm
+
+### Clone the Repository
+
+```bash
+git clone https://github.com/yourusername/eduzy.git
+cd eduzy
+```
+
+### Install Dependencies
+
+```bash
+npm install
+```
+
+### Configure Environment Variables
+
+Create a `.env.local` file and add your Gemini API key.
+
+```env
+GEMINI_API_KEY=your_api_key_here
+```
+
+### Run the Application
+
+```bash
+npm run dev
+```
+
+---
+
+## 📂 Project Structure
+
+```
+src/
+├── components/
+├── pages/
+├── hooks/
+├── services/
+├── utils/
+├── assets/
+└── App.tsx
+```
+
+---
+
+## 🔮 Future Improvements
+
+- Progress tracking dashboard
+- Coding playground
+- AI code reviewer
+- Achievement badges
+- Leaderboards
+- Multi-language learning support
+
+---
+
+## 👨‍💻 Author
+
+Mukesh T
