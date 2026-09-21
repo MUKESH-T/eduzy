@@ -1,12 +1,6 @@
 import React, { useState } from 'react';
 import { Course, Module, Activity } from '../types';
-<<<<<<< HEAD
-import { PlayCircle, Check, ChevronRight, Book, Code, List, Award, AlertTriangle, ExternalLink } from 'lucide-react';
-import ReactMarkdown from 'react-markdown'; // Placeholder import simulation, utilizing pre-wrap in practice if lib missing.
-=======
 import { PlayCircle, Check, ChevronRight, Book, Code, List, Award, AlertTriangle, ExternalLink, Loader2 } from 'lucide-react';
-import ReactMarkdown from 'react-markdown'; 
->>>>>>> ae5520bf0e2d24334e05a6e15e53058baafaa16d
 
 interface CourseRunnerProps {
   course: Course;
@@ -18,11 +12,6 @@ const CourseRunner: React.FC<CourseRunnerProps> = ({ course, onComplete }) => {
   const [completedActivities, setCompletedActivities] = useState<Set<string>>(new Set());
   const [showConfetti, setShowConfetti] = useState(false);
 
-<<<<<<< HEAD
-  const activeModule = course.modules[activeModuleIdx];
-  const isLastModule = activeModuleIdx === course.modules.length - 1;
-
-=======
   // Safety check: Ensure modules exist
   if (!course || !course.modules || course.modules.length === 0) {
       return (
@@ -37,7 +26,7 @@ const CourseRunner: React.FC<CourseRunnerProps> = ({ course, onComplete }) => {
       );
   }
 
-  const activeModule = course.modules[activeModuleIdx];
+    const activeModule = course.modules[activeModuleIdx];
   
   // Safety check: Ensure active module exists
   if (!activeModule) {
@@ -49,7 +38,6 @@ const CourseRunner: React.FC<CourseRunnerProps> = ({ course, onComplete }) => {
   // Safety check: Ensure activities exist
   const activities = activeModule.activities || [];
 
->>>>>>> ae5520bf0e2d24334e05a6e15e53058baafaa16d
   const handleActivitySubmit = (actIdx: number, isCorrect: boolean) => {
     if (isCorrect) {
         const id = `${activeModule.id}-act-${actIdx}`;
@@ -57,11 +45,7 @@ const CourseRunner: React.FC<CourseRunnerProps> = ({ course, onComplete }) => {
     }
   };
 
-<<<<<<< HEAD
-  const allActivitiesComplete = activeModule.activities.every((_, idx) => 
-=======
-  const allActivitiesComplete = activities.every((_, idx) => 
->>>>>>> ae5520bf0e2d24334e05a6e15e53058baafaa16d
+    const allActivitiesComplete = activities.every((_, idx) =>
     completedActivities.has(`${activeModule.id}-act-${idx}`)
   );
 
@@ -86,11 +70,7 @@ const CourseRunner: React.FC<CourseRunnerProps> = ({ course, onComplete }) => {
           <div className="divide-y divide-gray-100">
             {course.modules.map((mod, idx) => (
               <button
-<<<<<<< HEAD
-                key={mod.id}
-=======
                 key={mod.id || idx}
->>>>>>> ae5520bf0e2d24334e05a6e15e53058baafaa16d
                 onClick={() => setActiveModuleIdx(idx)}
                 className={`w-full text-left p-4 flex items-center gap-3 transition-colors ${
                   idx === activeModuleIdx 
@@ -124,25 +104,6 @@ const CourseRunner: React.FC<CourseRunnerProps> = ({ course, onComplete }) => {
         </div>
 
         {/* Video Rec */}
-<<<<<<< HEAD
-        <div className="bg-slate-900 rounded-2xl p-6 text-white flex flex-col sm:flex-row items-center gap-6 shadow-lg">
-            <div className="p-4 bg-white/10 rounded-full">
-                <PlayCircle size={40} className="text-red-500 bg-white rounded-full" />
-            </div>
-            <div className="flex-1">
-                <h4 className="text-lg font-semibold mb-1">Recommended Watch</h4>
-                <p className="text-slate-300 text-sm mb-3">Topic: {activeModule.videoRecommendation.title}</p>
-                <a 
-                    href={`https://www.youtube.com/results?search_query=${encodeURIComponent(activeModule.videoRecommendation.searchQuery)}`}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center gap-2 text-sm text-indigo-300 hover:text-indigo-200 underline"
-                >
-                    Find on YouTube <ExternalLink size={14} />
-                </a>
-            </div>
-        </div>
-=======
         {activeModule.videoRecommendation && (
             <div className="bg-slate-900 rounded-2xl p-6 text-white flex flex-col sm:flex-row items-center gap-6 shadow-lg">
                 <div className="p-4 bg-white/10 rounded-full">
@@ -162,7 +123,6 @@ const CourseRunner: React.FC<CourseRunnerProps> = ({ course, onComplete }) => {
                 </div>
             </div>
         )}
->>>>>>> ae5520bf0e2d24334e05a6e15e53058baafaa16d
 
         {/* Core Content */}
         <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 prose prose-indigo max-w-none">
@@ -171,11 +131,7 @@ const CourseRunner: React.FC<CourseRunnerProps> = ({ course, onComplete }) => {
                 {activeModule.content}
             </div>
             
-<<<<<<< HEAD
-            {activeModule.examples.length > 0 && (
-=======
             {activeModule.examples && activeModule.examples.length > 0 && (
->>>>>>> ae5520bf0e2d24334e05a6e15e53058baafaa16d
                 <div className="mt-8 space-y-6">
                     <h3 className="text-xl font-bold text-gray-800 flex items-center gap-2">
                         <Code size={24} className="text-indigo-600" /> Examples
@@ -190,22 +146,6 @@ const CourseRunner: React.FC<CourseRunnerProps> = ({ course, onComplete }) => {
         </div>
 
         {/* Activities */}
-<<<<<<< HEAD
-        <div className="space-y-6">
-            <h3 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
-                <List size={28} className="text-indigo-600" /> Interactive Tasks
-            </h3>
-            
-            {activeModule.activities.map((act, idx) => (
-                <ActivityCard 
-                    key={`${activeModule.id}-act-${idx}`} 
-                    activity={act} 
-                    onComplete={(success) => handleActivitySubmit(idx, success)}
-                    isCompleted={completedActivities.has(`${activeModule.id}-act-${idx}`)}
-                />
-            ))}
-        </div>
-=======
         {activities.length > 0 && (
             <div className="space-y-6">
                 <h3 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
@@ -222,7 +162,6 @@ const CourseRunner: React.FC<CourseRunnerProps> = ({ course, onComplete }) => {
                 ))}
             </div>
         )}
->>>>>>> ae5520bf0e2d24334e05a6e15e53058baafaa16d
 
         {/* Navigation Footer */}
         <div className="flex justify-end pt-8">
@@ -251,36 +190,6 @@ const ActivityCard: React.FC<{ activity: Activity, onComplete: (s: boolean) => v
 
     const handleSubmit = () => {
         let correct = false;
-<<<<<<< HEAD
-        const cleanUser = userAnswer.trim().toLowerCase();
-        const cleanCorrect = activity.correctAnswer.trim().toLowerCase();
-        
-        if (activity.type === 'drag_drop') {
-            if (activity.correctAnswer.includes(dragItems[0])) correct = true; // Forgiving for demo
-        } else if (activity.type === 'mini_puzzle') {
-            // Fuzzy logic for mini puzzle:
-            // 1. Exact match (normalized)
-            if (cleanUser === cleanCorrect) {
-                correct = true;
-            } 
-            // 2. Inclusion match (if one is substring of other, and length > 2)
-            else if (cleanUser.length > 2 && (cleanCorrect.includes(cleanUser) || cleanUser.includes(cleanCorrect))) {
-                correct = true;
-            }
-            // 3. Keyword match (if user provided at least one significant keyword from the answer)
-            else {
-                 const correctKeywords = cleanCorrect.split(/[\s\W]+/).filter(w => w.length > 2); // Split by non-word chars, filter short words
-                 const userKeywords = cleanUser.split(/[\s\W]+/);
-                 
-                 // Check if user answer contains any significant keyword from correct answer
-                 if (correctKeywords.length > 0 && correctKeywords.some(k => userKeywords.includes(k))) {
-                     correct = true;
-                 }
-            }
-        } else {
-            correct = cleanUser === cleanCorrect;
-=======
-        
         // --- RELAXED VALIDATION LOGIC ---
         
         // 1. Normalize
@@ -314,7 +223,6 @@ const ActivityCard: React.FC<{ activity: Activity, onComplete: (s: boolean) => v
                     correct = true;
                 }
             }
->>>>>>> ae5520bf0e2d24334e05a6e15e53058baafaa16d
         }
 
         if (correct) {
@@ -322,11 +230,7 @@ const ActivityCard: React.FC<{ activity: Activity, onComplete: (s: boolean) => v
             onComplete(true);
         } else {
             setFeedback("Not quite. Try again! " + (activity.hint ? `Hint: ${activity.hint}` : ""));
-<<<<<<< HEAD
             onComplete(false); // Can retry
-=======
-            onComplete(false); 
->>>>>>> ae5520bf0e2d24334e05a6e15e53058baafaa16d
         }
     };
 

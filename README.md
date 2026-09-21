@@ -64,7 +64,6 @@ npm install
 
 ### Configure Environment Variables
 
-<<<<<<< HEAD
 `.env.local` is intentionally ignored by Git so an API key is not uploaded to GitHub. Copy the example file and add your own key:
 
 ```env

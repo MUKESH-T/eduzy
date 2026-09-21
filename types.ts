@@ -55,8 +55,6 @@ export interface ChatMessage {
   text: string;
   timestamp: number;
 }
-<<<<<<< HEAD
-=======
 
 export interface CertificateRecord {
   id: string;
@@ -66,4 +64,4 @@ export interface CertificateRecord {
   date: string;
   userName: string;
 }
->>>>>>> ae5520bf0e2d24334e05a6e15e53058baafaa16d
+
