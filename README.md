@@ -64,6 +64,7 @@ npm install
 
 ### Configure Environment Variables
 
+<<<<<<< HEAD
 `.env.local` is intentionally ignored by Git so an API key is not uploaded to GitHub. Copy the example file and add your own key:
 
 ```env
@@ -84,6 +85,14 @@ This application calls Gemini directly from the browser. Vite embeds `GEMINI_API
 
 For a public deployment, use a backend or serverless API proxy and keep the Gemini key on that server. For a private demo, you can provide `GEMINI_API_KEY` as a GitHub Actions secret during the build, but restrict and monitor that key in Google AI Studio.
 
+=======
+Create a `.env.local` file and add your Gemini API key.
+
+```env
+GEMINI_API_KEY=your_api_key_here
+```
+
+>>>>>>> ae5520bf0e2d24334e05a6e15e53058baafaa16d
 ### Run the Application
 
 ```bash

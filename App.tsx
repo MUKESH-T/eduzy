@@ -1,19 +1,34 @@
 import React, { useState, useEffect } from 'react';
+<<<<<<< HEAD
 import { User, Track, Question, Course, AssessmentResult } from './types';
+=======
+import { User, Track, Question, Course, AssessmentResult, SkillLevel, CertificateRecord } from './types';
+>>>>>>> ae5520bf0e2d24334e05a6e15e53058baafaa16d
 import Auth from './components/Auth';
 import Assessment from './components/Assessment';
 import CourseRunner from './components/CourseRunner';
 import Chatbot from './components/Chatbot';
 import Certificate from './components/Certificate';
 import { generateInitialAssessment, evaluateAssessment, generateCourse, generateFinalAssessment } from './services/geminiService';
+<<<<<<< HEAD
 import { Loader2, Code2, Terminal, Cpu, LayoutDashboard, LogOut, RotateCcw, CheckCircle2, Play } from 'lucide-react';
 
 type ViewState = 'auth' | 'track-select' | 'initial-assessment' | 'evaluating' | 'course-loading' | 'learning' | 'final-exam' | 'certificate';
+=======
+import { Loader2, Code2, Terminal, Cpu, LayoutDashboard, LogOut, RotateCcw, CheckCircle2, Play, Award, FileText, XCircle } from 'lucide-react';
+
+type ViewState = 'auth' | 'track-select' | 'initial-assessment' | 'evaluating' | 'course-loading' | 'learning' | 'final-exam' | 'certificate' | 'view-certificates';
+>>>>>>> ae5520bf0e2d24334e05a6e15e53058baafaa16d
 
 // Persist progress in memory during session
 interface TrackProgress {
   result: AssessmentResult;
   course: Course;
+<<<<<<< HEAD
+=======
+  isCompleted?: boolean;
+  finalScore?: number;
+>>>>>>> ae5520bf0e2d24334e05a6e15e53058baafaa16d
 }
 
 function App() {
@@ -29,10 +44,20 @@ function App() {
   // Course State
   const [course, setCourse] = useState<Course | null>(null);
   const [userProgress, setUserProgress] = useState<Record<string, TrackProgress>>({});
+<<<<<<< HEAD
   
   // Final Exam State
   const [finalQuestions, setFinalQuestions] = useState<Question[]>([]);
   const [finalScore, setFinalScore] = useState(0);
+=======
+  const [certificates, setCertificates] = useState<CertificateRecord[]>([]);
+  
+  // Final Exam State
+  const [finalQuestions, setFinalQuestions] = useState<Question[]>([]);
+  
+  // View Certificate State
+  const [activeCertificate, setActiveCertificate] = useState<CertificateRecord | null>(null);
+>>>>>>> ae5520bf0e2d24334e05a6e15e53058baafaa16d
 
   // Loading States
   const [isProcessing, setIsProcessing] = useState(false);
@@ -51,13 +76,18 @@ function App() {
     setSelectedTrack(null);
     setInitialQuestions([]);
     setFinalQuestions([]);
+<<<<<<< HEAD
     setFinalScore(0);
+=======
+    setActiveCertificate(null);
+>>>>>>> ae5520bf0e2d24334e05a6e15e53058baafaa16d
     setView('track-select');
   };
 
   const handleLogout = () => {
     setUser(null);
     setUserProgress({});
+<<<<<<< HEAD
     setView('auth');
   };
 
@@ -65,6 +95,16 @@ function App() {
     setIsProcessing(true);
     try {
       const questions = await generateInitialAssessment(track);
+=======
+    setCertificates([]);
+    setView('auth');
+  };
+
+  const startAssessment = async (track: Track, forcedLevel?: SkillLevel) => {
+    setIsProcessing(true);
+    try {
+      const questions = await generateInitialAssessment(track, forcedLevel);
+>>>>>>> ae5520bf0e2d24334e05a6e15e53058baafaa16d
       setInitialQuestions(questions);
       setView('initial-assessment');
     } catch (e) {
@@ -78,12 +118,37 @@ function App() {
   const handleTrackSelect = async (track: Track) => {
     setSelectedTrack(track);
 
+<<<<<<< HEAD
     // CHECK: If user has already completed assessment for this track, skip to course
+=======
+    // CHECK: If user has already completed assessment for this track
+>>>>>>> ae5520bf0e2d24334e05a6e15e53058baafaa16d
     if (userProgress[track]) {
       const savedProgress = userProgress[track];
       setAssessmentResult(savedProgress.result);
       setCourse(savedProgress.course);
+<<<<<<< HEAD
       setView('learning');
+=======
+      
+      // If completed, user usually shouldn't be here unless they clicked "Study Again" or logic reset
+      // For dashboard clicks on completed items, we might show menu or go to cert? 
+      // Current UI has specific buttons for "View Cert" or "Study Again".
+      // If they click the main card area:
+      if (savedProgress.isCompleted) {
+        // If they click the main card on a completed course, show the latest cert
+        const cert = certificates.find(c => c.track === track);
+        if (cert) {
+            setActiveCertificate(cert);
+            setView('certificate');
+        } else {
+            // Fallback (shouldn't happen)
+            setView('track-select');
+        }
+      } else {
+        setView('learning');
+      }
+>>>>>>> ae5520bf0e2d24334e05a6e15e53058baafaa16d
       return;
     }
 
@@ -91,6 +156,7 @@ function App() {
     await startAssessment(track);
   };
 
+<<<<<<< HEAD
   const handleRetakeAssessment = async (e: React.MouseEvent, track: Track) => {
     e.stopPropagation(); // Prevent triggering the card click
     
@@ -100,11 +166,57 @@ function App() {
       delete newProgress[track];
       setUserProgress(newProgress);
       
+=======
+  const handleStudyAgain = async (e: React.MouseEvent, track: Track) => {
+    e.stopPropagation();
+    if (window.confirm(`Restart the ${track} course? You will begin with ADVANCED concepts. Your previous certificate will be saved.`)) {
+        // Clear progress but keep certificate in `certificates` state
+        const newProgress = { ...userProgress };
+        delete newProgress[track];
+        setUserProgress(newProgress);
+        
+        setSelectedTrack(track);
+        // FORCE ADVANCED LEVEL
+        await startAssessment(track, 'Advanced');
+    }
+  };
+
+  const handleRetakeAssessment = async (e: React.MouseEvent, track: Track) => {
+    e.stopPropagation(); 
+    if (window.confirm(`Are you sure you want to retake the ${track} initial assessment? This will reset your current progress.`)) {
+      const newProgress = { ...userProgress };
+      delete newProgress[track];
+      setUserProgress(newProgress);
+>>>>>>> ae5520bf0e2d24334e05a6e15e53058baafaa16d
       setSelectedTrack(track);
       await startAssessment(track);
     }
   };
 
+<<<<<<< HEAD
+=======
+  const handleRetakeFinalExam = async (e: React.MouseEvent, track: Track) => {
+      e.stopPropagation();
+      if (window.confirm("Do you want to retake the Final Exam?")) {
+        setSelectedTrack(track);
+        if (userProgress[track]) {
+            const prog = userProgress[track];
+            setIsProcessing(true);
+            try {
+                const questions = await generateFinalAssessment(track, prog.course.level);
+                setFinalQuestions(questions);
+                setCourse(prog.course);
+                setView('final-exam');
+            } catch (err) {
+                console.error(err);
+            } finally {
+                setIsProcessing(false);
+            }
+        }
+      }
+  };
+
+>>>>>>> ae5520bf0e2d24334e05a6e15e53058baafaa16d
   const handleInitialAssessmentSubmit = async (answers: Record<number, string>) => {
     setIsProcessing(true);
     setView('evaluating');
@@ -124,11 +236,19 @@ function App() {
         ...prev,
         [selectedTrack]: {
           result: result,
+<<<<<<< HEAD
           course: generatedCourse
         }
       }));
       
       // Artificial delay to let user read evaluation if we showed it, but let's jump to intro
+=======
+          course: generatedCourse,
+          isCompleted: false
+        }
+      }));
+      
+>>>>>>> ae5520bf0e2d24334e05a6e15e53058baafaa16d
       setView('course-loading'); 
       setTimeout(() => setView('learning'), 2000);
 
@@ -158,6 +278,7 @@ function App() {
   const handleFinalExamSubmit = async (answers: Record<number, string>) => {
     setIsProcessing(true);
     try {
+<<<<<<< HEAD
         if (!selectedTrack) return;
         const result = await evaluateAssessment(selectedTrack, finalQuestions, answers);
         
@@ -167,6 +288,41 @@ function App() {
         } else {
             alert(`You scored ${result.score}%. You need 60% to pass. Please review the course and try again.`);
             setView('learning');
+=======
+        if (!selectedTrack || !user || !course) return;
+        const result = await evaluateAssessment(selectedTrack, finalQuestions, answers);
+        
+        if (result.score >= 60) {
+            // PASS
+            const newCert: CertificateRecord = {
+                id: `EDUZY-${Math.random().toString(36).substr(2, 9).toUpperCase()}`,
+                track: selectedTrack,
+                level: course.level,
+                score: result.score,
+                date: new Date().toLocaleDateString(),
+                userName: user.name
+            };
+
+            // Save Certificate
+            setCertificates(prev => [...prev, newCert]);
+            setActiveCertificate(newCert);
+            
+            // Mark Course as completed
+            setUserProgress(prev => ({
+                ...prev,
+                [selectedTrack]: {
+                    ...prev[selectedTrack],
+                    isCompleted: true,
+                    finalScore: result.score
+                }
+            }));
+
+            setView('certificate');
+        } else {
+            // FAIL
+            alert("Sorry, you failed the test. Please try again later.");
+            handleBackToDashboard(); 
+>>>>>>> ae5520bf0e2d24334e05a6e15e53058baafaa16d
         }
     } catch (e) {
         console.error(e);
@@ -175,6 +331,20 @@ function App() {
     }
   };
 
+<<<<<<< HEAD
+=======
+  const handleViewCertificates = (e: React.MouseEvent, track: Track) => {
+      e.stopPropagation();
+      // Find latest cert for track or list all? Let's just show latest for simplicity or a list modal.
+      // For now, show latest.
+      const certs = certificates.filter(c => c.track === track);
+      if (certs.length > 0) {
+          setActiveCertificate(certs[certs.length - 1]);
+          setView('certificate');
+      }
+  };
+
+>>>>>>> ae5520bf0e2d24334e05a6e15e53058baafaa16d
   // --- Render Views ---
 
   if (view === 'auth') {
@@ -200,6 +370,7 @@ function App() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-5xl">
             {[
+<<<<<<< HEAD
               { id: 'Python', icon: Terminal, color: 'bg-yellow-500', gradient: 'from-yellow-400 to-yellow-600' },
               { id: 'Java', icon: Code2, color: 'bg-red-500', gradient: 'from-red-400 to-red-600' },
               { id: 'C++', icon: Cpu, color: 'bg-blue-600', gradient: 'from-blue-400 to-blue-700' }
@@ -222,6 +393,44 @@ function App() {
                     <h3 className="text-2xl font-bold text-gray-800 mb-2">{track.id}</h3>
                     
                     {hasProgress ? (
+=======
+              { id: 'Python', icon: Terminal, gradient: 'from-yellow-400 to-yellow-600' },
+              { id: 'Java', icon: Code2, gradient: 'from-red-400 to-red-600' },
+              { id: 'C++', icon: Cpu, gradient: 'from-blue-400 to-blue-700' }
+            ].map((trackItem) => {
+              const trackId = trackItem.id as Track;
+              const progress = userProgress[trackId];
+              const hasProgress = !!progress;
+              const isCompleted = progress?.isCompleted;
+              const hasCertificate = certificates.some(c => c.track === trackId);
+
+              return (
+                <div key={trackId} className="relative group">
+                  <button
+                    onClick={() => handleTrackSelect(trackId)}
+                    className="w-full h-full relative overflow-hidden bg-white rounded-2xl p-8 shadow-md hover:shadow-xl transition-all border border-gray-100 text-left flex flex-col"
+                  >
+                    <div className={`absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity`}>
+                      <trackItem.icon size={120} className="text-gray-900" />
+                    </div>
+                    
+                    <div className={`w-14 h-14 bg-gradient-to-br ${trackItem.gradient} rounded-xl flex items-center justify-center mb-6 text-white shadow-lg`}>
+                      <trackItem.icon size={28} />
+                    </div>
+                    
+                    <h3 className="text-2xl font-bold text-gray-800 mb-2">{trackId}</h3>
+                    
+                    {isCompleted ? (
+                        <div className="mt-auto">
+                           <div className="inline-flex items-center gap-2 bg-indigo-50 text-indigo-700 px-3 py-1 rounded-full text-xs font-bold mb-2 border border-indigo-100">
+                             <Award size={12} /> Certified
+                           </div>
+                           <p className="text-sm text-gray-500 flex items-center gap-1 font-medium group-hover:text-indigo-600 transition-colors">
+                              View Certificate <FileText size={14} className="fill-current" />
+                           </p>
+                        </div>
+                    ) : hasProgress ? (
+>>>>>>> ae5520bf0e2d24334e05a6e15e53058baafaa16d
                        <div className="mt-auto">
                          <div className="inline-flex items-center gap-2 bg-green-50 text-green-700 px-3 py-1 rounded-full text-xs font-bold mb-2 border border-green-100">
                            <CheckCircle2 size={12} /> Course Ready
@@ -235,6 +444,7 @@ function App() {
                     )}
                   </button>
 
+<<<<<<< HEAD
                   {/* Retake Button for existing courses */}
                   {hasProgress && (
                     <button 
@@ -245,6 +455,41 @@ function App() {
                       <RotateCcw size={16} />
                     </button>
                   )}
+=======
+                  {/* Context Actions */}
+                  <div className="absolute top-4 right-4 flex flex-col gap-2 z-10">
+                    
+                    {/* View Certificate (Always visible if earned, even if studying again) */}
+                    {hasCertificate && (
+                        <button 
+                            onClick={(e) => handleViewCertificates(e, trackId)}
+                            className="p-2 text-indigo-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-full transition-all bg-white shadow-sm border border-indigo-100"
+                            title="View Earned Certificate"
+                        >
+                            <Award size={16} />
+                        </button>
+                    )}
+
+                    {/* Reset/Study Again Logic */}
+                    {isCompleted ? (
+                        <button 
+                            onClick={(e) => handleStudyAgain(e, trackId)}
+                            className="p-2 text-gray-300 hover:text-indigo-600 hover:bg-indigo-50 rounded-full transition-all bg-white shadow-sm"
+                            title="Study Again (Advanced)"
+                        >
+                            <RotateCcw size={16} />
+                        </button>
+                    ) : hasProgress && (
+                        <button 
+                            onClick={(e) => handleRetakeAssessment(e, trackId)}
+                            className="p-2 text-gray-300 hover:text-red-600 hover:bg-red-50 rounded-full transition-all bg-white shadow-sm"
+                            title="Reset Progress"
+                        >
+                            <XCircle size={16} />
+                        </button>
+                    )}
+                  </div>
+>>>>>>> ae5520bf0e2d24334e05a6e15e53058baafaa16d
                 </div>
               );
             })}
@@ -341,8 +586,13 @@ function App() {
     );
   }
 
+<<<<<<< HEAD
   if (view === 'certificate' && course && user) {
     return <Certificate user={user} course={course} score={finalScore} onBack={handleBackToDashboard} />;
+=======
+  if (view === 'certificate' && activeCertificate) {
+    return <Certificate data={activeCertificate} onBack={handleBackToDashboard} />;
+>>>>>>> ae5520bf0e2d24334e05a6e15e53058baafaa16d
   }
 
   return <div>Loading...</div>;

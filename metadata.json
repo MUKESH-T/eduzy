@@ -3,6 +3,10 @@
   "description": "An AI-powered adaptive learning platform that generates personalized programming courses, assesses skills, provides real-time tutoring, and issues certifications.",
   "requestFramePermissions": [
     "camera"
+<<<<<<< HEAD
   ],
   "majorCapabilities": []
+=======
+  ]
+>>>>>>> ae5520bf0e2d24334e05a6e15e53058baafaa16d
 }

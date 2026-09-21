@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 import { Course, Module, Activity } from '../types';
+<<<<<<< HEAD
 import { PlayCircle, Check, ChevronRight, Book, Code, List, Award, AlertTriangle, ExternalLink } from 'lucide-react';
 import ReactMarkdown from 'react-markdown'; // Placeholder import simulation, utilizing pre-wrap in practice if lib missing.
+=======
+import { PlayCircle, Check, ChevronRight, Book, Code, List, Award, AlertTriangle, ExternalLink, Loader2 } from 'lucide-react';
+import ReactMarkdown from 'react-markdown'; 
+>>>>>>> ae5520bf0e2d24334e05a6e15e53058baafaa16d
 
 interface CourseRunnerProps {
   course: Course;
@@ -13,9 +18,38 @@ const CourseRunner: React.FC<CourseRunnerProps> = ({ course, onComplete }) => {
   const [completedActivities, setCompletedActivities] = useState<Set<string>>(new Set());
   const [showConfetti, setShowConfetti] = useState(false);
 
+<<<<<<< HEAD
   const activeModule = course.modules[activeModuleIdx];
   const isLastModule = activeModuleIdx === course.modules.length - 1;
 
+=======
+  // Safety check: Ensure modules exist
+  if (!course || !course.modules || course.modules.length === 0) {
+      return (
+          <div className="min-h-screen flex flex-col items-center justify-center p-6 text-center">
+              <AlertTriangle className="w-16 h-16 text-yellow-500 mb-4" />
+              <h2 className="text-xl font-bold text-gray-800">Course Content Unavailable</h2>
+              <p className="text-gray-600 mt-2">The AI could not generate the modules correctly.</p>
+              <button onClick={() => window.location.reload()} className="mt-6 px-4 py-2 bg-indigo-600 text-white rounded-lg">
+                  Refresh & Try Again
+              </button>
+          </div>
+      );
+  }
+
+  const activeModule = course.modules[activeModuleIdx];
+  
+  // Safety check: Ensure active module exists
+  if (!activeModule) {
+       return <div className="p-8 text-center">Loading module...</div>;
+  }
+
+  const isLastModule = activeModuleIdx === course.modules.length - 1;
+
+  // Safety check: Ensure activities exist
+  const activities = activeModule.activities || [];
+
+>>>>>>> ae5520bf0e2d24334e05a6e15e53058baafaa16d
   const handleActivitySubmit = (actIdx: number, isCorrect: boolean) => {
     if (isCorrect) {
         const id = `${activeModule.id}-act-${actIdx}`;
@@ -23,7 +57,11 @@ const CourseRunner: React.FC<CourseRunnerProps> = ({ course, onComplete }) => {
     }
   };
 
+<<<<<<< HEAD
   const allActivitiesComplete = activeModule.activities.every((_, idx) => 
+=======
+  const allActivitiesComplete = activities.every((_, idx) => 
+>>>>>>> ae5520bf0e2d24334e05a6e15e53058baafaa16d
     completedActivities.has(`${activeModule.id}-act-${idx}`)
   );
 
@@ -48,7 +86,11 @@ const CourseRunner: React.FC<CourseRunnerProps> = ({ course, onComplete }) => {
           <div className="divide-y divide-gray-100">
             {course.modules.map((mod, idx) => (
               <button
+<<<<<<< HEAD
                 key={mod.id}
+=======
+                key={mod.id || idx}
+>>>>>>> ae5520bf0e2d24334e05a6e15e53058baafaa16d
                 onClick={() => setActiveModuleIdx(idx)}
                 className={`w-full text-left p-4 flex items-center gap-3 transition-colors ${
                   idx === activeModuleIdx 
@@ -82,6 +124,7 @@ const CourseRunner: React.FC<CourseRunnerProps> = ({ course, onComplete }) => {
         </div>
 
         {/* Video Rec */}
+<<<<<<< HEAD
         <div className="bg-slate-900 rounded-2xl p-6 text-white flex flex-col sm:flex-row items-center gap-6 shadow-lg">
             <div className="p-4 bg-white/10 rounded-full">
                 <PlayCircle size={40} className="text-red-500 bg-white rounded-full" />
@@ -99,6 +142,27 @@ const CourseRunner: React.FC<CourseRunnerProps> = ({ course, onComplete }) => {
                 </a>
             </div>
         </div>
+=======
+        {activeModule.videoRecommendation && (
+            <div className="bg-slate-900 rounded-2xl p-6 text-white flex flex-col sm:flex-row items-center gap-6 shadow-lg">
+                <div className="p-4 bg-white/10 rounded-full">
+                    <PlayCircle size={40} className="text-red-500 bg-white rounded-full" />
+                </div>
+                <div className="flex-1">
+                    <h4 className="text-lg font-semibold mb-1">Recommended Watch</h4>
+                    <p className="text-slate-300 text-sm mb-3">Topic: {activeModule.videoRecommendation.title}</p>
+                    <a 
+                        href={`https://www.youtube.com/results?search_query=${encodeURIComponent(activeModule.videoRecommendation.searchQuery)}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-2 text-sm text-indigo-300 hover:text-indigo-200 underline"
+                    >
+                        Find on YouTube <ExternalLink size={14} />
+                    </a>
+                </div>
+            </div>
+        )}
+>>>>>>> ae5520bf0e2d24334e05a6e15e53058baafaa16d
 
         {/* Core Content */}
         <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 prose prose-indigo max-w-none">
@@ -107,7 +171,11 @@ const CourseRunner: React.FC<CourseRunnerProps> = ({ course, onComplete }) => {
                 {activeModule.content}
             </div>
             
+<<<<<<< HEAD
             {activeModule.examples.length > 0 && (
+=======
+            {activeModule.examples && activeModule.examples.length > 0 && (
+>>>>>>> ae5520bf0e2d24334e05a6e15e53058baafaa16d
                 <div className="mt-8 space-y-6">
                     <h3 className="text-xl font-bold text-gray-800 flex items-center gap-2">
                         <Code size={24} className="text-indigo-600" /> Examples
@@ -122,6 +190,7 @@ const CourseRunner: React.FC<CourseRunnerProps> = ({ course, onComplete }) => {
         </div>
 
         {/* Activities */}
+<<<<<<< HEAD
         <div className="space-y-6">
             <h3 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
                 <List size={28} className="text-indigo-600" /> Interactive Tasks
@@ -136,6 +205,24 @@ const CourseRunner: React.FC<CourseRunnerProps> = ({ course, onComplete }) => {
                 />
             ))}
         </div>
+=======
+        {activities.length > 0 && (
+            <div className="space-y-6">
+                <h3 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
+                    <List size={28} className="text-indigo-600" /> Interactive Tasks
+                </h3>
+                
+                {activities.map((act, idx) => (
+                    <ActivityCard 
+                        key={`${activeModule.id}-act-${idx}`} 
+                        activity={act} 
+                        onComplete={(success) => handleActivitySubmit(idx, success)}
+                        isCompleted={completedActivities.has(`${activeModule.id}-act-${idx}`)}
+                    />
+                ))}
+            </div>
+        )}
+>>>>>>> ae5520bf0e2d24334e05a6e15e53058baafaa16d
 
         {/* Navigation Footer */}
         <div className="flex justify-end pt-8">
@@ -164,6 +251,7 @@ const ActivityCard: React.FC<{ activity: Activity, onComplete: (s: boolean) => v
 
     const handleSubmit = () => {
         let correct = false;
+<<<<<<< HEAD
         const cleanUser = userAnswer.trim().toLowerCase();
         const cleanCorrect = activity.correctAnswer.trim().toLowerCase();
         
@@ -191,6 +279,42 @@ const ActivityCard: React.FC<{ activity: Activity, onComplete: (s: boolean) => v
             }
         } else {
             correct = cleanUser === cleanCorrect;
+=======
+        
+        // --- RELAXED VALIDATION LOGIC ---
+        
+        // 1. Normalize
+        const cleanUser = userAnswer.trim().toLowerCase().replace(/[.,!?;:]/g, '');
+        const cleanCorrect = activity.correctAnswer.trim().toLowerCase().replace(/[.,!?;:]/g, '');
+        
+        if (activity.type === 'drag_drop') {
+            // Very forgiving for drag drop (usually checks order)
+            // If the first item matches the first item of correct answer string (if it were parsed), or simplified check
+            // Here assuming standard string comparison for simplicity in this demo structure
+            if (activity.correctAnswer.toLowerCase().includes(dragItems[0].toLowerCase())) correct = true; 
+        } else {
+            // 2. Direct Match
+            if (cleanUser === cleanCorrect) {
+                correct = true;
+            }
+            // 3. Substring Match (e.g. User: "print" vs Correct: "print function")
+            else if (cleanUser.length > 2 && (cleanCorrect.includes(cleanUser) || cleanUser.includes(cleanCorrect))) {
+                correct = true;
+            }
+            // 4. Keyword Match (e.g. User: "It is a loop" vs Correct: "For Loop")
+            else {
+                const userWords = cleanUser.split(/\s+/);
+                const correctWords = cleanCorrect.split(/\s+/);
+                
+                // Filter out small words (stop words) to avoid false positives on "a", "the", "is"
+                const significantCorrectWords = correctWords.filter(w => w.length > 3);
+                
+                // If user has typed ANY significant word from the answer, we accept it.
+                if (significantCorrectWords.some(w => userWords.includes(w))) {
+                    correct = true;
+                }
+            }
+>>>>>>> ae5520bf0e2d24334e05a6e15e53058baafaa16d
         }
 
         if (correct) {
@@ -198,7 +322,11 @@ const ActivityCard: React.FC<{ activity: Activity, onComplete: (s: boolean) => v
             onComplete(true);
         } else {
             setFeedback("Not quite. Try again! " + (activity.hint ? `Hint: ${activity.hint}` : ""));
+<<<<<<< HEAD
             onComplete(false); // Can retry
+=======
+            onComplete(false); 
+>>>>>>> ae5520bf0e2d24334e05a6e15e53058baafaa16d
         }
     };
 
